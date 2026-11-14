@@ -1,0 +1,19 @@
+{
+  "name": "server-vel",
+  "version": "1.0.0",
+  "description": "Servidor WebSocket Relay E2EE para VEL",
+  "main": "relay-server.ts",
+  "scripts": {
+    "start": "ts-node relay-server.ts"
+  },
+  "dependencies": {
+    "ws": "^8.16.0",
+    "firebase-admin": "^12.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.11.0",
+    "@types/ws": "^8.5.10"
+  }
+}
