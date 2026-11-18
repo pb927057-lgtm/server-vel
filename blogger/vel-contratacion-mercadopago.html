@@ -1,0 +1,291 @@
+<!--
+  VEL 0.1 — Bloque HTML/JS oficial para Blogger (https://proyecto-vel.blogspot.com)
+  Incluye:
+  1. Acceso directo "Entrar a VEL" hacia la PWA alojada en Netlify (origen oficial de instalación).
+  2. Información clara de instalación como PWA (sin APK, sin ZIP instalador; Blogger NO aloja el Service Worker).
+  3. Acceso directo a Términos, Condiciones y Contrato de Uso oficial.
+  4. Contratación y renovación manual (30 días) mediante Mercado Pago Checkout Pro.
+
+  Requisitos de seguridad y compatibilidad:
+  - Reutiliza la sesión existente de Firebase Authentication en Blogger (sin duplicar initializeApp).
+    Nota para SDK Modular v9+: asignar window.velFirebaseAuth = auth desde el script existente de Blogger.
+  - Obtiene el ID token fresco del usuario autenticado mediante user.getIdToken(true).
+  - Envía solicitud POST segura a la Netlify Function create-preference con Authorization: Bearer.
+  - No envía ni confía en UID, correo, precio ni estado desde el navegador.
+  - Redirige únicamente cuando el backend devuelve una preferencia válida con init_point HTTPS.
+  - No contiene credenciales privadas ni simula pagos exitosos.
+-->
+<div id="vel-portal-oficial-blogger"
+     style="max-width:540px;margin:20px auto;font-family:system-ui,-apple-system,sans-serif;color:#111827;">
+
+  <!-- Bloque 1: Acceso directo a la PWA VEL en Netlify + Guía de Instalación -->
+  <div id="vel-acceso-pwa-box"
+       style="margin-bottom:16px;padding:20px;border:1px solid #0891b2;border-radius:12px;background:#0b1220;color:#f1f5f9;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#00cfe8;text-transform:uppercase;">
+        VEL 0.1 • Aplicación Web (PWA)
+      </span>
+      <span style="font-size:11px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,0.16);color:#34d399;font-weight:600;">
+        Alojada en Netlify
+      </span>
+    </div>
+
+    <h3 style="margin:0 0 8px 0;font-size:19px;font-weight:800;color:#ffffff;">
+      Acceder a VEL
+    </h3>
+    <p style="margin:0 0 14px 0;font-size:13px;line-height:1.5;color:#cbd5e1;">
+      Abre la aplicación oficial VEL en su dominio seguro de Netlify para configurar tu teléfono principal (<strong>VEL CORE</strong>) o tu teléfono diario (<strong>VEL MÓVIL</strong>).
+    </p>
+
+    <a id="vel-btn-entrar-pwa"
+       href="https://proyecto-vel.netlify.app"
+       target="_blank"
+       rel="noopener noreferrer"
+       style="display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;padding:13px 16px;border-radius:8px;background:#00cfe8;color:#0b1220;font-size:15px;font-weight:800;letter-spacing:0.02em;">
+      Entrar a VEL
+    </a>
+
+    <div style="margin-top:14px;padding:12px;border-radius:8px;background:#111c2e;border:1px solid #22324c;font-size:12px;line-height:1.5;color:#cbd5e1;">
+      <strong style="color:#ffffff;display:block;margin-bottom:4px;">Cómo instalar VEL en tu teléfono (sin APK):</strong>
+      <div>1. Pulsa <strong>Entrar a VEL</strong> para abrir la aplicación en Netlify desde Chrome (Android) o Safari (iOS).</div>
+      <div>2. En Android (Chrome): selecciona el botón <strong>Instalar VEL</strong> o el menú (⋮) &gt; <em>Instalar aplicación</em> / <em>Agregar a la pantalla principal</em>.</div>
+      <div>3. En iPhone/iPad (Safari): pulsa <em>Compartir</em> &gt; <em>Agregar a pantalla de inicio</em>.</div>
+      <div style="margin-top:6px;color:#94a3b8;font-size:11px;">
+        Nota técnica: la aplicación y su Service Worker se sirven exclusivamente desde el dominio Netlify (no desde Blogger ni mediante archivos ZIP o APK).
+      </div>
+    </div>
+
+    <div style="margin-top:12px;text-align:center;">
+      <a id="vel-link-condiciones"
+         href="https://proyecto-vel.blogspot.com/2026/11/terminos-y-condiciones-y-contrato-de-uso.html"
+         target="_blank"
+         rel="noopener noreferrer"
+         style="font-size:12px;font-weight:600;color:#00cfe8;text-decoration:underline;">
+        Consultar Términos, Condiciones y Contrato de Uso
+      </a>
+    </div>
+  </div>
+
+  <!-- Bloque 2: Contratación y Renovación Manual (Mercado Pago Checkout Pro 30 días) -->
+  <div id="vel-pago-manual-box"
+       data-netlify-base="https://proyecto-vel.netlify.app"
+       style="padding:20px;border:1px solid #d1d5db;border-radius:10px;background:#ffffff;color:#111827;">
+    <h3 style="margin:0 0 8px 0;font-size:18px;font-weight:700;">
+      Suscripción mensual VEL (30 días)
+    </h3>
+    <p style="margin:0 0 14px 0;font-size:14px;line-height:1.5;color:#4b5563;">
+      Contratación o renovación manual por 30 días mediante Mercado Pago Checkout Pro (tarjeta, saldo, Rapipago o Pago Fácil).
+      El acceso se acredita automáticamente cuando Mercado Pago confirma el pago aprobado.
+    </p>
+
+    <div id="vel-pago-usuario-estado"
+         style="margin-bottom:14px;padding:10px 12px;border-radius:8px;background:#f3f4f6;font-size:13px;color:#374151;">
+      Verificando sesión de Firebase en el portal...
+    </div>
+
+    <button id="vel-btn-contratar-mp"
+            type="button"
+            disabled
+            style="width:100%;padding:12px 16px;border:none;border-radius:8px;background:#009ee3;color:#ffffff;font-size:15px;font-weight:600;cursor:not-allowed;opacity:0.65;">
+      Contratar o renovar con Mercado Pago
+    </button>
+
+    <div id="vel-pago-error"
+         role="alert"
+         style="display:none;margin-top:12px;padding:10px 12px;border-radius:8px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;font-size:13px;line-height:1.4;">
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var box = document.getElementById('vel-pago-manual-box');
+  var statusEl = document.getElementById('vel-pago-usuario-estado');
+  var btn = document.getElementById('vel-btn-contratar-mp');
+  var errorEl = document.getElementById('vel-pago-error');
+  var enterBtn = document.getElementById('vel-btn-entrar-pwa');
+
+  if (!box || !statusEl || !btn || !errorEl) return;
+
+  var netlifyBase = (box.getAttribute('data-netlify-base') || '').replace(/\/+$/, '');
+  if (enterBtn && netlifyBase && netlifyBase.indexOf('https://') === 0) {
+    enterBtn.setAttribute('href', netlifyBase + '/');
+  }
+
+  var currentUser = null;
+  var isSubmitting = false;
+
+  function showError(message) {
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+  }
+
+  function clearError() {
+    errorEl.textContent = '';
+    errorEl.style.display = 'none';
+  }
+
+  function setButtonEnabled(enabled, label) {
+    btn.disabled = !enabled;
+    btn.style.cursor = enabled ? 'pointer' : 'not-allowed';
+    btn.style.opacity = enabled ? '1' : '0.65';
+    if (label) {
+      btn.textContent = label;
+    }
+  }
+
+  /**
+   * Localiza la instancia de Firebase Auth ya inicializada en Blogger sin crear otra app.
+   */
+  function resolveExistingFirebaseAuth() {
+    if (window.velFirebaseAuth) {
+      return window.velFirebaseAuth;
+    }
+    if (window.firebaseAuth) {
+      return window.firebaseAuth;
+    }
+    if (window.firebase && typeof window.firebase.auth === 'function') {
+      if (window.firebase.apps && window.firebase.apps.length > 0) {
+        return window.firebase.auth();
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Obtiene un ID Token actualizado sin duplicar inicialización de Firebase.
+   */
+  async function getFreshIdToken(user) {
+    if (!user) return null;
+    if (typeof user.getIdToken === 'function') {
+      return await user.getIdToken(true);
+    }
+    throw new Error('La sesión actual de Firebase no expone getIdToken().');
+  }
+
+  function updateAuthUI(user) {
+    currentUser = user || null;
+
+    if (currentUser) {
+      var userEmail = currentUser.email || currentUser.uid;
+      statusEl.textContent = 'Sesión iniciada como: ' + userEmail;
+      statusEl.style.background = '#ecfdf5';
+      statusEl.style.color = '#065f46';
+      // Evita rehabilitar o alterar el botón mientras existe un envío en curso
+      if (!isSubmitting) {
+        clearError();
+        setButtonEnabled(true, 'Contratar o renovar con Mercado Pago');
+      }
+    } else {
+      isSubmitting = false;
+      clearError();
+      statusEl.textContent = 'Debes iniciar sesión en tu cuenta VEL antes de contratar o renovar.';
+      statusEl.style.background = '#fffbeb';
+      statusEl.style.color = '#92400e';
+      setButtonEnabled(false, 'Inicia sesión para continuar');
+    }
+  }
+
+  function attachAuthListener() {
+    var authInstance = resolveExistingFirebaseAuth();
+    if (!authInstance) {
+      statusEl.textContent = 'Esperando inicialización de Firebase Authentication en Blogger...';
+      if (!isSubmitting) {
+        setButtonEnabled(false, 'Sesión no disponible aún');
+      }
+      return false;
+    }
+
+    if (typeof authInstance.onAuthStateChanged === 'function') {
+      authInstance.onAuthStateChanged(function (user) {
+        updateAuthUI(user);
+      });
+    } else if (authInstance.currentUser !== undefined) {
+      updateAuthUI(authInstance.currentUser);
+    }
+    return true;
+  }
+
+  btn.addEventListener('click', async function () {
+    if (isSubmitting) return;
+    clearError();
+
+    if (!netlifyBase || netlifyBase.indexOf('https://') !== 0) {
+      showError('La URL base de Netlify configurada en el bloque no es válida.');
+      return;
+    }
+
+    var authInstance = resolveExistingFirebaseAuth();
+    var user = (authInstance && authInstance.currentUser) ? authInstance.currentUser : currentUser;
+
+    if (!user) {
+      updateAuthUI(null);
+      showError('No hay una sesión activa de Firebase. Inicia sesión e intenta nuevamente.');
+      return;
+    }
+
+    isSubmitting = true;
+    setButtonEnabled(false, 'Generando enlace de pago en Mercado Pago...');
+
+    try {
+      var idToken = await getFreshIdToken(user);
+      if (!idToken) {
+        throw new Error('No se pudo obtener el token de autenticación de Firebase.');
+      }
+
+      var endpoint = netlifyBase + '/.netlify/functions/create-preference';
+      var response = await fetch(endpoint, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Authorization': 'Bearer ' + idToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      });
+
+      var payload = {};
+      try {
+        payload = await response.json();
+      } catch (_) {
+        payload = {};
+      }
+
+      if (!response.ok || !payload.success || !payload.preference_id || !payload.init_point) {
+        if (response.status === 503 && payload.pendingConfig) {
+          throw new Error(
+            payload.error || 'El sistema de pagos en Netlify tiene credenciales pendientes de configuración.'
+          );
+        }
+        throw new Error(
+          payload.error || ('Error al iniciar pago (HTTP ' + response.status + ').')
+        );
+      }
+
+      if (typeof payload.init_point !== 'string' || payload.init_point.indexOf('https://') !== 0) {
+        throw new Error('El servidor devolvió una URL de pago inválida.');
+      }
+
+      window.location.href = payload.init_point;
+    } catch (err) {
+      showError(err && err.message ? err.message : 'No se pudo conectar con el servidor de pagos.');
+      isSubmitting = false;
+      setButtonEnabled(Boolean(currentUser), 'Contratar o renovar con Mercado Pago');
+    }
+  });
+
+  if (!attachAuthListener()) {
+    var attempts = 0;
+    var timer = setInterval(function () {
+      attempts++;
+      if (attachAuthListener() || attempts >= 20) {
+        clearInterval(timer);
+        if (attempts >= 20 && !resolveExistingFirebaseAuth()) {
+          statusEl.textContent = 'No se detectó Firebase Authentication activo en esta página de Blogger.';
+          showError('Verifica que la página de Blogger tenga cargado el módulo de sesión Firebase existente.');
+        }
+      }
+    }, 300);
+  }
+})();
+</script>

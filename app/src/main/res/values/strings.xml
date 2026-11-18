@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">VEL</string>
+    <string name="status_active">Suscripción Activa</string>
+    <string name="status_expired">Suscripción Vencida</string>
+    <string name="btn_sync">Sincronizar con Core</string>
+    <string name="welcome_title">Bienvenido a VEL</string>
+    <string name="welcome_two_phones">Para utilizar VEL necesitás dos teléfonos Android. Uno funcionará como VEL CORE y el otro como VEL MÓVIL.</string>
+    <string name="core_name">VEL CORE</string>
+    <string name="core_desc">Tu dispositivo principal. Administra y protege tu información.</string>
+    <string name="mobile_name">VEL MÓVIL</string>
+    <string name="mobile_desc">Tu dispositivo personal. Se conecta con tu VEL CORE.</string>
+    <string name="btn_start_setup">COMENZAR CONFIGURACIÓN</string>
+    <string name="config_device_title">Configurar este dispositivo</string>
+    <string name="btn_config_core">CONFIGURAR COMO VEL CORE</string>
+    <string name="btn_config_mobile">CONFIGURAR COMO VEL MÓVIL</string>
+    <string name="relay_connected_sim">Relay: Conectado (Simulado)</string>
+    <string name="my_mobile_phone">Mi teléfono móvil</string>
+    <string name="btn_manage_my_phone">ADMINISTRAR MI TELÉFONO</string>
+    <string name="btn_link_another_phone">VINCULAR OTRO TELÉFONO</string>
+    <string name="my_account_sub">MI CUENTA Y SUSCRIPCIÓN</string>
+    <string name="emergency_lost_stolen_title">¿PERDISTE TU TELÉFONO O TE LO ROBARON?</string>
+    <string name="emergency_lost_stolen_desc">Protegé tu información inmediatamente revocando el acceso del dispositivo móvil.</string>
+    <string name="btn_emergency_revoke">EMERGENCIA Y REVOCACIÓN</string>
+    <string name="mobile_core_conn">Conexión con VEL CORE</string>
+    <string name="access_revoked_title">Acceso revocado por VEL CORE</string>
+    <string name="local_vault_title">Bóveda de Soberanía Local</string>
+    <string name="tech_tools_tooltip">Herramientas y diagnóstico</string>
+    <string name="core_console_title">Consola Técnica VEL CORE</string>
+    <string name="mobile_console_title">Consola Técnica VEL MÓVIL</string>
+    <string name="btn_close_console">Volver a la pantalla principal</string>
+</resources>

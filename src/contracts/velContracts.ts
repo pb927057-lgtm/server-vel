@@ -59,7 +59,7 @@ export interface OperationTrackingRecord {
 export interface RelayServerConfigResponse {
   configured: boolean;
   wssUrl: string | null;
-  source?: 'env' | 'vite_env' | 'none';
+  source?: 'env' | 'vite_env' | 'production_default' | 'none';
   message?: string;
 }
 
