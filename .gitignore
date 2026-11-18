@@ -1,8 +1,20 @@
 node_modules/
+build/
 dist/
-.env
-.env.*
-!.env.example
-server-vel/data/*.json
-server-vel/test-data/
+coverage/
+.DS_Store
 *.log
+.env*
+!.env.example
+
+# Gradle & Android
+.gradle/
+app/build/
+local.properties
+*.apk
+*.aab
+.idea/
+*.iml
+!gradle/wrapper/gradle-wrapper.jar
+
+
